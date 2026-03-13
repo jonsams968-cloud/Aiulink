@@ -5,14 +5,17 @@ from app.models import (
     AgentDefinition,
     DataImportRequest,
     DataImportResponse,
+    ResponsibilityCardRequest,
+    ResponsibilityCardResponse,
     TaskPlanRequest,
     TaskPlanResponse,
 )
 from app.services.data_import import import_dataset
 from app.services.orchestrator import build_task_plan
+from app.services.responsibility import build_responsibility_card
 from app.services.skill_builder import build_agent_from_natural_language
 
-app = FastAPI(title="Aiulink Control Plane", version="0.2.0")
+app = FastAPI(title="Aiulink Control Plane", version="0.3.0")
 
 
 @app.get("/health")
@@ -33,3 +36,8 @@ def plan_task(req: TaskPlanRequest) -> TaskPlanResponse:
 @app.post("/v1/data/import", response_model=DataImportResponse)
 def import_data(req: DataImportRequest) -> DataImportResponse:
     return import_dataset(req)
+
+
+@app.post("/v1/tasks/responsibility-card", response_model=ResponsibilityCardResponse)
+def create_responsibility_card(req: ResponsibilityCardRequest) -> ResponsibilityCardResponse:
+    return build_responsibility_card(req)

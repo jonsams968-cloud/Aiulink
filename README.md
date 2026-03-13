@@ -14,6 +14,7 @@ Aiulink 本身就是企业系统：
 - 默认自动化低风险任务，高风险任务触发人工确认。
 - 通过一个高权限悬浮控制框实现全网可视化、接管与审计。
 - 将“数据导入”作为 AI 决策前置条件。
+- 为每个任务自动生成“任务责任单（Task Responsibility Card）”。
 
 ## Monorepo 结构
 
@@ -27,10 +28,12 @@ Aiulink 本身就是企业系统：
 │   │       ├── skill_builder.py
 │   │       ├── orchestrator.py
 │   │       ├── risk_engine.py
-│   │       └── data_import.py
+│   │       ├── data_import.py
+│   │       └── responsibility.py
 │   ├── tests/
 │   │   ├── test_skill_builder.py
-│   │   └── test_data_import.py
+│   │   ├── test_data_import.py
+│   │   └── test_responsibility.py
 │   └── pyproject.toml
 ├── docs/
 │   ├── architecture.md      # 工程框架设计
@@ -60,6 +63,9 @@ uvicorn app.main:app --reload --port 8080
 - `POST /v1/data/import`
   - 输入本地或云数据来源信息。
   - 输出导入摘要（来源、数据集、风险等级、是否需人工确认）。
+- `POST /v1/tasks/responsibility-card`
+  - 输入任务发起者、审批者、数据集版本、代理调用与输出对象。
+  - 输出责任归属、审批状态、决策轨迹和证据引用。
 
 ## 下一步建议
 - 前端实现“悬浮控制框 + 任务时间线 + 责任归因”。

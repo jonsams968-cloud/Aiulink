@@ -71,3 +71,27 @@ class DataImportResponse:
     risk_level: RiskLevel
     require_human_approval: bool
     note: str
+
+
+@dataclass
+class ResponsibilityCardRequest:
+    task_id: str
+    initiator: str
+    approver: str | None
+    datasets: list[str] = field(default_factory=list)
+    dataset_versions: list[str] = field(default_factory=list)
+    agents_used: list[str] = field(default_factory=list)
+    risk_level: RiskLevel = RiskLevel.R1
+    output_targets: list[str] = field(default_factory=list)
+    escalation_notes: list[str] = field(default_factory=list)
+
+
+@dataclass
+class ResponsibilityCardResponse:
+    task_id: str
+    accountability_owner: str
+    approval_required: bool
+    decision_trace: list[str]
+    evidence_refs: list[str]
+    output_targets: list[str]
+    status: str
