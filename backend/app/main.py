@@ -1,0 +1,22 @@
+from fastapi import FastAPI
+
+from app.models import AgentCreateRequest, AgentDefinition, TaskPlanRequest, TaskPlanResponse
+from app.services.orchestrator import build_task_plan
+from app.services.skill_builder import build_agent_from_natural_language
+
+app = FastAPI(title="Aiulink Control Plane", version="0.1.0")
+
+
+@app.get("/health")
+def health() -> dict[str, str]:
+    return {"status": "ok"}
+
+
+@app.post("/v1/agents/from-natural-language", response_model=AgentDefinition)
+def create_agent(req: AgentCreateRequest) -> AgentDefinition:
+    return build_agent_from_natural_language(req)
+
+
+@app.post("/v1/tasks/plan", response_model=TaskPlanResponse)
+def plan_task(req: TaskPlanRequest) -> TaskPlanResponse:
+    return build_task_plan(req)
